@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
     }
     else // parent cycle
     {
+        // close read head of pipe1, write head of pipe2
         close(pipe1[0]);
         close(pipe2[1]);
 
@@ -67,6 +68,7 @@ int main(int argc, char *argv[])
         close(pipe1[1]);
         close(pipe2[0]);
 
+        // wait until the subcycle ends
         wait(0);
         exit(0);
     }
