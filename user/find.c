@@ -65,7 +65,7 @@ void find(const char *dirPath, const char *targetFile)
         joinPaths(buff, dirPath, de.name);
 
         // get the status of the full path
-        if (stat(buff, &st) < 0)
+        if (fstat(buff, &st) < 0)
         {
             fprintf(2, "find: Can't stat %s\n", buff);
             continue;
