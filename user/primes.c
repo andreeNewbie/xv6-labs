@@ -67,7 +67,7 @@ int main() {
         // Parent process
         close(p[0]); // Close read end of the pipe
 
-        for (int i = 2; i <= 280; i++) {
+        for (int i = 2; i <= 35; i++) {
             write(p[1], &i, sizeof(int));
         }
 
