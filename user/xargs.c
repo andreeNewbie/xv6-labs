@@ -1,5 +1,5 @@
-#include "kernel/types.h"
-#include "user/user.h"
+#include "../kernel/types.h"
+#include "../user/user.h"
 
 #define MAXARG 32  // Maximum number of arguments
 #define MAXLEN 512 // Maximum length of an input line
@@ -11,8 +11,17 @@ int main(int argc, char *argv[]) {
     }
 
     char *new_argv[MAXARG];
-    for (int i = 1; i < argc; i++) {
-        new_argv[i - 1] = argv[i]; // Copy the command and initial arguments
+    int new_argc = 0;
+
+    // Check for -n argument
+    if (argc > 2 && strcmp(argv[1], "-n") == 0) {
+        for (int i = 3; i < argc; i++) {
+            new_argv[new_argc++] = argv[i];
+        }
+    } else {
+        for (int i = 1; i < argc; i++) {
+            new_argv[new_argc++] = argv[i];
+        }
     }
 
     char buf[MAXLEN];
@@ -21,8 +30,8 @@ int main(int argc, char *argv[]) {
     while (read(0, buf + len, 1) == 1) {
         if (buf[len] == '\n') { // When encountering a newline, execute the command
             buf[len] = 0; // Null-terminate the string
-            new_argv[argc - 1] = buf; // Add the line to the last argument
-            new_argv[argc] = 0; // Null-terminated argument list
+            new_argv[new_argc] = buf; // Add the line to the last argument
+            new_argv[new_argc + 1] = 0; // Null-terminated argument list
 
             // Check if new_argv[0] is valid before execution
             if (new_argv[0] == 0) {
@@ -41,10 +50,11 @@ int main(int argc, char *argv[]) {
         } else {
             len++;
             if (len >= MAXLEN) { // Limit input length
-                fprintf(2, "xargs: input too long\n");
+                fprintf(2, "xargs: input line too long\n");
                 exit(1);
             }
         }
     }
-    exit(0);
+
+    return 0;
 }
