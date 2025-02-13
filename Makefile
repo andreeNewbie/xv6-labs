@@ -194,7 +194,7 @@ UPROGS=\
 	$U/_grind\
 	$U/_wc\
 	$U/_zombie\
-  $U/_pingpong\
+	$U/_pingpong\
 	$U/_find\
 	$U/_primes\
 	$U/_xargs\
